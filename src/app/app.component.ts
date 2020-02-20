@@ -14,6 +14,6 @@ export class AppComponent {
 
   constructor() {
     this.start = new Date().getTime();
-    setInterval(() => this.time = new Date().getTime() - this.time, 200);
+    setInterval(() => this.time = new Date().getTime() - this.start, 10);
   }
 }

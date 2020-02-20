@@ -16,7 +16,7 @@
       <dq-light-point [position]="{x: testNumeric, y: 2}" [debug]="true"></dq-light-point>
       <dq-cube [position]="{x: -1, y: 0.5}" [color]="testColor">
       </dq-cube>
-      <dq-group [position]="{y: testNumeric, z: time* -0.00025}">
+      <dq-group [position]="{x: (time * 0.003) | cos, y: testNumeric, z: (time * 0.003) | sin}">
         <dq-cube [position]="{x: +1}" [color]="'#7ccdee'">
         </dq-cube>
         <dq-sphere [position]="{x: +1, y: +1}" [color]="'#8999c8'">
