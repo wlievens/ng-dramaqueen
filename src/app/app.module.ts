@@ -13,6 +13,8 @@ import {DqLightPointComponent} from './dq-light-point/dq-light-point.component';
 import {DqSceneComponent} from './dq-scene/dq-scene.component';
 import {DqSphereComponent} from './dq-sphere/dq-sphere.component';
 import { DqGridComponent } from './dq-grid/dq-grid.component';
+import { SinPipe } from './sin.pipe';
+import { CosPipe } from './cos.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { DqGridComponent } from './dq-grid/dq-grid.component';
     DqSceneComponent,
     DqSphereComponent,
     DqGridComponent,
+    SinPipe,
+    CosPipe,
   ],
   imports: [
     AngularResizedEventModule,
