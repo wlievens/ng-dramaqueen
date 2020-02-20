@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ResizedEvent} from 'angular-resize-event';
 import {Observable, of} from 'rxjs';
-import {BasicShadowMap, Color, Object3D, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three';
+import {BasicShadowMap, Color, Object3D, PerspectiveCamera, Raycaster, Scene, Vector3, WebGLRenderer} from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import {DqGroupComponent} from '../dq-group/dq-group.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
@@ -18,6 +18,9 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
   private renderer: WebGLRenderer;
   private camera: PerspectiveCamera;
   private scene: Scene;
+  private rayCaster: Raycaster;
+  private lastMouseXY: { x: number, y: number } = null;
+  private lastMouseClicked = false;
 
   constructor(private ngZone: NgZone) {
     super();
@@ -50,6 +53,8 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
     container.appendChild(renderer.domElement);
     this.renderer = renderer;
 
+    this.rayCaster = new Raycaster();
+
     this.animate();
   }
 
@@ -70,6 +75,17 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
   ngOnInit() {
   }
 
+  onMouseDown(event: MouseEvent) {
+    this.lastMouseClicked = true;
+    this.registerMouseXY(event);
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (!this.lastMouseClicked) {
+      this.registerMouseXY(event);
+    }
+  }
+
   onResized(event: ResizedEvent) {
     const container: HTMLDivElement = this.sceneContainer.nativeElement;
     const width = event.newWidth;
@@ -84,10 +100,47 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
     const self = this;
 
     function render() {
+      const {scene, camera, lastMouseXY, lastMouseClicked} = self;
+
       self.ngZone.runOutsideAngular(() => requestAnimationFrame(render));
-      self.renderer.render(self.scene, self.camera);
+
+      if (lastMouseXY) {
+        self.rayCaster.setFromCamera(lastMouseXY, camera);
+        const intersections = self.rayCaster.intersectObjects(scene.children, true);
+        if (intersections.length > 0) {
+          for (let i = 0; i < intersections.length; ++i) {
+            const intersection = intersections[i];
+            const object = intersection.object;
+            const node = object.userData;
+            if (node instanceof DqNodeComponent) {
+              if (lastMouseClicked) {
+                const emitted = node.emitSelect();
+                if (emitted) {
+                  break;
+                }
+              } else {
+                const emitted = node.emitHover();
+                if (emitted) {
+                  break;
+                }
+              }
+            }
+          }
+          self.lastMouseXY = null;
+          self.lastMouseClicked = false;
+        }
+      }
+
+      self.renderer.render(scene, camera);
     }
 
     render();
+  }
+
+  private registerMouseXY(event: MouseEvent) {
+    const container: HTMLDivElement = this.sceneContainer.nativeElement;
+    const x = event.offsetX / container.clientWidth * 2 - 1;
+    const y = event.offsetY / container.clientHeight * -2 + 1;
+    this.lastMouseXY = {x, y};
   }
 }

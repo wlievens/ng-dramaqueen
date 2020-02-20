@@ -6,14 +6,21 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  testNumeric: number = 0;
+  testNumeric: number = 10;
   testColor: string = '#e894a6';
   time = 0;
+  selectedX: number;
+  selectedZ: number;
 
   private start: number;
 
   constructor() {
     this.start = new Date().getTime();
     setInterval(() => this.time = new Date().getTime() - this.start, 10);
+  }
+
+  onSelect(x: number, z: number) {
+    this.selectedX = x;
+    this.selectedZ = z;
   }
 }

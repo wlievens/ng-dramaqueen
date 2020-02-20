@@ -27,7 +27,8 @@ export class DqLightPointComponent extends DqLightComponent {
     light.shadow.mapSize.height = 1024;
     if (this.debug) {
       light.add(new Mesh(new SphereBufferGeometry(0.1, 16, 8), new MeshBasicMaterial({color: 0xff00ff})));
+      return of([light, new CameraHelper(light.shadow.camera)]);
     }
-    return of([light, new CameraHelper(light.shadow.camera)]);
+    return of([light]);
   }
 }

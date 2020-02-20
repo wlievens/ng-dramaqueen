@@ -8,9 +8,6 @@ export abstract class DqGeometryComponent extends DqNodeComponent {
   @Input()
   color: string = '#000000';
 
-  @Input()
-  size: Vector = null;
-
   constructor() {
     super();
   }

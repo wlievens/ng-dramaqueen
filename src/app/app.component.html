@@ -5,30 +5,41 @@
     Its only purpose is <i>making a scene</i>!
   </p>
 
-  <mat-slider style="width: 100%;" min="-2" max="+2" step="0.1" [(value)]="testNumeric"></mat-slider>
+  <mat-slider style="width: 100%;" min="10" max="50" step="1" [(value)]="testNumeric"></mat-slider>
 
   <input type="color" [(ngModel)]="testColor">
 
   <div style="height: 600px;">
     <dq-scene>
       <dq-grid [cell]="1" [cells]="20"></dq-grid>
-      <dq-cube [color]="'#aabbaa'" [size]="{x: 10, y: 0.1, z: 10}" [position]="{y: -0.075}"></dq-cube>
+
+      <dq-cube [color]="'#becf78'" [size]="{x: 10, y: 0.1, z: 10}" [position]="{y: -0.075}"></dq-cube>
+
+      <dq-group *ngFor="let x of [0, 1, 2, 3, 4]">
+        <dq-group [position]="{z: 1}" *ngFor="let z of [0, 1, 2, 3, 4]">
+          <dq-cube
+            [color]="(x === selectedX && z === selectedZ) ? '#bb2f3b' : '#aabbaa'"
+            [size]="{x: 0.3, y: 0.3, z: 0.3}"
+            [position]="{x: 0.4 * x, y: 0.1, z: 0.4 * z}"
+            (hover)="onSelect(x, z)"
+          ></dq-cube>
+        </dq-group>
+      </dq-group>
+
       <dq-light-ambient [intensity]="0.25"></dq-light-ambient>
       <dq-light-point
         [color]="'#aaaaff'"
-        [position]="{x: 3 * (time * -0.001 | cos), y: 2.5, z: 3 * (time * -0.001 | sin)}"
+        [position]="{x: 3 * (time * -testNumeric * 0.0001 | cos), y: 3.5, z: 3 * (time * -testNumeric * 0.0001 | sin)}"
         [intensity]="0.65"
-        [debug]="true"
       ></dq-light-point>
       <dq-light-point
         [color]="'#ffaaaa'"
-        [position]="{x: 3.2 * (time * 0.002 | cos), y: 2.5, z: 3.2 * (time * 0.002 | sin)}"
+        [position]="{x: 3.2 * (time * testNumeric * 0.0001 | cos), y: 3.5, z: 3.2 * (time * testNumeric * 0.0001 | sin)}"
         [intensity]="0.65"
-        [debug]="true"
       ></dq-light-point>
       <dq-cube [position]="{x: -1, y: 0.5}" [color]="testColor">
       </dq-cube>
-      <dq-group [position]="{x: 0, y: 0, z: 0}">
+      <dq-group [position]="{x: 0, y: 0.5, z: 0}">
         <dq-cube [position]="{x: +1}" [color]="'#7ccdee'">
         </dq-cube>
         <dq-sphere [position]="{x: +1, y: +1}" [color]="'#8999c8'">

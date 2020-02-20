@@ -1,3 +1,4 @@
-<div class="outer-container" (resized)="onResized($event)">
+<div class="outer-container"
+     (mousedown)="onMouseDown($event)" (mousemove)="onMouseMove($event)" (resized)="onResized($event)">
   <div #scenecontainer></div>
 </div>
