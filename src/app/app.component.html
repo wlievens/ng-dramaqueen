@@ -12,11 +12,23 @@
   <div style="height: 600px;">
     <dq-scene>
       <dq-grid [cell]="1" [cells]="20"></dq-grid>
-      <dq-light-ambient [intensity]="0.5"></dq-light-ambient>
-      <dq-light-point [position]="{x: testNumeric, y: 2}" [debug]="true"></dq-light-point>
+      <dq-cube [color]="'#aabbaa'" [size]="{x: 10, y: 0.1, z: 10}" [position]="{y: -0.075}"></dq-cube>
+      <dq-light-ambient [intensity]="0.25"></dq-light-ambient>
+      <dq-light-point
+        [color]="'#aaaaff'"
+        [position]="{x: 3 * (time * -0.001 | cos), y: 2.5, z: 3 * (time * -0.001 | sin)}"
+        [intensity]="0.65"
+        [debug]="true"
+      ></dq-light-point>
+      <dq-light-point
+        [color]="'#ffaaaa'"
+        [position]="{x: 3.2 * (time * 0.002 | cos), y: 2.5, z: 3.2 * (time * 0.002 | sin)}"
+        [intensity]="0.65"
+        [debug]="true"
+      ></dq-light-point>
       <dq-cube [position]="{x: -1, y: 0.5}" [color]="testColor">
       </dq-cube>
-      <dq-group [position]="{x: (time * 0.003) | cos, y: testNumeric, z: (time * 0.003) | sin}">
+      <dq-group [position]="{x: 0, y: 0, z: 0}">
         <dq-cube [position]="{x: +1}" [color]="'#7ccdee'">
         </dq-cube>
         <dq-sphere [position]="{x: +1, y: +1}" [color]="'#8999c8'">

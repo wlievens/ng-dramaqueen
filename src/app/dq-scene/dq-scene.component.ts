@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ResizedEvent} from 'angular-resize-event';
 import {Observable, of} from 'rxjs';
-import {Color, Object3D, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three';
+import {BasicShadowMap, Color, Object3D, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import {DqGroupComponent} from '../dq-group/dq-group.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
@@ -45,6 +45,8 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
     this.camera = camera;
 
     renderer.setViewport(0, 0, container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = BasicShadowMap;
     container.appendChild(renderer.domElement);
     this.renderer = renderer;
 

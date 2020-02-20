@@ -15,6 +15,10 @@ export class DqCubeComponent extends DqGeometryComponent {
   }
 
   generate(): Observable<Object3D[]> {
-    return this.createMesh(new BoxGeometry());
+    const {size} = this;
+    const sizeX = size ? size.x : 1;
+    const sizeY = size ? size.y : 1;
+    const sizeZ = size ? size.z : 1;
+    return this.createMesh(new BoxGeometry(sizeX, sizeY, sizeZ));
   }
 }
