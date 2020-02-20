@@ -6,7 +6,7 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  testNumeric: number = 10;
+  lightIntensity: number = 30;
   testColor: string = '#e894a6';
   time = 0;
   selectedX: number;

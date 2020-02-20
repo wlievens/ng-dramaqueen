@@ -5,7 +5,7 @@
     Its only purpose is <i>making a scene</i>!
   </p>
 
-  <mat-slider style="width: 100%;" min="10" max="50" step="1" [(value)]="testNumeric"></mat-slider>
+  <mat-slider style="width: 100%;" min="10" max="60" step="1" [(value)]="lightIntensity"></mat-slider>
 
   <input type="color" [(ngModel)]="color1">
   <input type="color" [(ngModel)]="color2">
@@ -15,8 +15,8 @@
       <dq-light-ambient [intensity]="0.25"></dq-light-ambient>
       <dq-light-point
         [color]="'#ffffee'"
-        [position]="{x: 0, y: 5, z: 0}"
-        [intensity]="0.80"
+        [position]="{x: 3 * ((time * 0.001) | cos), y: 2.5, z: 3 * ((time * 0.001) | sin)}"
+        [intensity]="lightIntensity * 0.05"
       ></dq-light-point>
       <dq-group [position]="{x: -3.5, z: -3.5}">
         <dq-group [position]="{x: x}" *ngFor="let x of eight">
@@ -84,12 +84,12 @@
       <dq-light-ambient [intensity]="0.25"></dq-light-ambient>
       <dq-light-point
         [color]="'#aaaaff'"
-        [position]="{x: 3 * (time * -testNumeric * 0.00005 | cos), y: 3.5, z: 3 * (time * -testNumeric * 0.00005 | sin)}"
+        [position]="{x: 3 * (time * -lightIntensity * 0.00005 | cos), y: 3.5, z: 3 * (time * -lightIntensity * 0.00005 | sin)}"
         [intensity]="0.65"
       ></dq-light-point>
       <dq-light-point
         [color]="'#ffaaaa'"
-        [position]="{x: 3.2 * (time * testNumeric * 0.00003 | cos), y: 3.5, z: 3.2 * (time * testNumeric * 0.00003 | sin)}"
+        [position]="{x: 3.2 * (time * lightIntensity * 0.00003 | cos), y: 3.5, z: 3.2 * (time * lightIntensity * 0.00003 | sin)}"
         [intensity]="0.65"
       ></dq-light-point>
       <dq-cube [position]="{x: -1, y: 0.5}" [color]="testColor">
