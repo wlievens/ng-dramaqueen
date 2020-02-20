@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DqCubeComponent } from './dq-cube.component';
+import {DqCubeComponent} from './dq-cube.component';
 
 describe('DqCubeComponent', () => {
   let component: DqCubeComponent;
@@ -8,9 +8,8 @@ describe('DqCubeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DqCubeComponent ]
-    })
-    .compileComponents();
+      declarations: [DqCubeComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

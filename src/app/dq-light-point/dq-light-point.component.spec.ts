@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DqLightPointComponent } from './dq-light-point.component';
+import {DqLightPointComponent} from './dq-light-point.component';
 
 describe('DqLightPointComponent', () => {
   let component: DqLightPointComponent;
@@ -8,9 +8,8 @@ describe('DqLightPointComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DqLightPointComponent ]
-    })
-    .compileComponents();
+      declarations: [DqLightPointComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

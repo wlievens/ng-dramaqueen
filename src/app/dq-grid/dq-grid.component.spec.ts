@@ -9,8 +9,7 @@ describe('DqGridComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DqGridComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

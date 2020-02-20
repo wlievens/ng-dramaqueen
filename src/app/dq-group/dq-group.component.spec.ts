@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DqGroupComponent } from './dq-group.component';
+import {DqGroupComponent} from './dq-group.component';
 
 describe('DqGroupComponent', () => {
   let component: DqGroupComponent;
@@ -8,9 +8,8 @@ describe('DqGroupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DqGroupComponent ]
-    })
-    .compileComponents();
+      declarations: [DqGroupComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
