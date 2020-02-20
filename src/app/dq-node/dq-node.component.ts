@@ -52,15 +52,8 @@ export abstract class DqNodeComponent implements OnChanges {
 
   private transform(object: Object3D) {
     const {position} = this;
-    if (position && position.x) {
-      object.position.x = position.x;
+    if (position) {
+      object.position.set(position.x || 0, position.y || 0, position.z || 0);
     }
-    if (position && position.y) {
-      object.position.y = position.y;
-    }
-    if (position && position.z) {
-      object.position.z = position.z;
-    }
-    return object;
   }
 }
