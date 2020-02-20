@@ -12,22 +12,24 @@ import {DqLightAmbientComponent} from './dq-light-ambient/dq-light-ambient.compo
 import {DqLightPointComponent} from './dq-light-point/dq-light-point.component';
 import {DqSceneComponent} from './dq-scene/dq-scene.component';
 import {DqSphereComponent} from './dq-sphere/dq-sphere.component';
-import { DqGridComponent } from './dq-grid/dq-grid.component';
-import { SinPipe } from './sin.pipe';
-import { CosPipe } from './cos.pipe';
+import {DqGridComponent} from './dq-grid/dq-grid.component';
+import {SinPipe} from './sin.pipe';
+import {CosPipe} from './cos.pipe';
+import {DqModelComponent} from './dq-model/dq-model.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CosPipe,
     DqCubeComponent,
+    DqGridComponent,
     DqGroupComponent,
     DqLightAmbientComponent,
     DqLightPointComponent,
+    DqModelComponent,
     DqSceneComponent,
     DqSphereComponent,
-    DqGridComponent,
     SinPipe,
-    CosPipe,
   ],
   imports: [
     AngularResizedEventModule,

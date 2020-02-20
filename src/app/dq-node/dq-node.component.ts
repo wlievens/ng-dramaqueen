@@ -8,6 +8,12 @@ export abstract class DqNodeComponent implements OnChanges, OnInit {
   @Input()
   position: Vector;
 
+  @Input()
+  rotation: Vector;
+
+  @Input()
+  scale: Vector;
+
   @Output()
   select: EventEmitter<DqNodeComponent> = new EventEmitter();
 
@@ -81,9 +87,16 @@ export abstract class DqNodeComponent implements OnChanges, OnInit {
   }
 
   private transform(object: Object3D) {
-    const {position} = this;
+    const {position, rotation, scale} = this;
     if (position) {
       object.position.set(position.x || 0, position.y || 0, position.z || 0);
+    }
+    if (rotation) {
+      const factor = Math.PI / 180;
+      object.rotation.set(factor * rotation.x || 0, factor * rotation.y || 0, factor * rotation.z || 0);
+    }
+    if (scale) {
+      object.scale.set(scale.x || 0, scale.y || 0, scale.z || 0);
     }
   }
 }

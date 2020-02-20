@@ -12,6 +12,9 @@ export class AppComponent {
   selectedX: number;
   selectedZ: number;
   eight = [0, 1, 2, 3, 4, 5, 6, 7];
+  chessScale = 0.2;
+  color1 = '#2f1e4d';
+  color2 = '#d1d7dc';
 
   private start: number;
 
