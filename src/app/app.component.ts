@@ -11,6 +11,7 @@ export class AppComponent {
   time = 0;
   selectedX: number;
   selectedZ: number;
+  eight = [0, 1, 2, 3, 4, 5, 6, 7];
 
   private start: number;
 
