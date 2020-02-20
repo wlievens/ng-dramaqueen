@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild} from '@angular/core';
 import {ResizedEvent} from 'angular-resize-event';
 import {Observable, of} from 'rxjs';
 import {BasicShadowMap, Color, Object3D, PerspectiveCamera, Raycaster, Scene, Vector3, WebGLRenderer} from 'three';
@@ -12,8 +12,11 @@ import {DqNodeComponent} from '../dq-node/dq-node.component';
   styleUrls: ['./dq-scene.component.less']
 })
 export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterViewInit {
+  @Output()
+  hoverClear: EventEmitter<any> = new EventEmitter();
+
   @ViewChild('scenecontainer', {read: ElementRef})
-  sceneContainer: ElementRef;
+  private sceneContainer: ElementRef;
 
   private renderer: WebGLRenderer;
   private camera: PerspectiveCamera;
@@ -21,6 +24,7 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
   private rayCaster: Raycaster;
   private lastMouseXY: { x: number, y: number } = null;
   private lastMouseClicked = false;
+  private lastHoverEmitted: DqNodeComponent = null;
 
   constructor(private ngZone: NgZone) {
     super();
@@ -108,23 +112,29 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
         self.rayCaster.setFromCamera(lastMouseXY, camera);
         const intersections = self.rayCaster.intersectObjects(scene.children, true);
         if (intersections.length > 0) {
+          let emitted = false;
           for (let i = 0; i < intersections.length; ++i) {
             const intersection = intersections[i];
             const object = intersection.object;
             const node = object.userData;
             if (node instanceof DqNodeComponent) {
               if (lastMouseClicked) {
-                const emitted = node.emitSelect();
+                emitted = node.emitSelect();
                 if (emitted) {
                   break;
                 }
               } else {
-                const emitted = node.emitHover();
+                emitted = node.emitHover();
                 if (emitted) {
+                  self.lastHoverEmitted = node;
                   break;
                 }
               }
             }
+          }
+          if (!emitted && !lastMouseClicked && self.lastHoverEmitted) {
+            self.hoverClear.emit();
+            self.lastHoverEmitted = null;
           }
           self.lastMouseXY = null;
           self.lastMouseClicked = false;

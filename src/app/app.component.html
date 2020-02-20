@@ -10,7 +10,7 @@
   <input type="color" [(ngModel)]="testColor">
 
   <div style="height: 600px;">
-    <dq-scene>
+    <dq-scene (hoverClear)="onSelect(null, null)">
       <dq-grid [cell]="1" [cells]="20"></dq-grid>
 
       <dq-cube [color]="'#becf78'" [size]="{x: 10, y: 0.1, z: 10}" [position]="{y: -0.075}"></dq-cube>
@@ -29,12 +29,12 @@
       <dq-light-ambient [intensity]="0.25"></dq-light-ambient>
       <dq-light-point
         [color]="'#aaaaff'"
-        [position]="{x: 3 * (time * -testNumeric * 0.0001 | cos), y: 3.5, z: 3 * (time * -testNumeric * 0.0001 | sin)}"
+        [position]="{x: 3 * (time * -testNumeric * 0.00005 | cos), y: 3.5, z: 3 * (time * -testNumeric * 0.00005 | sin)}"
         [intensity]="0.65"
       ></dq-light-point>
       <dq-light-point
         [color]="'#ffaaaa'"
-        [position]="{x: 3.2 * (time * testNumeric * 0.0001 | cos), y: 3.5, z: 3.2 * (time * testNumeric * 0.0001 | sin)}"
+        [position]="{x: 3.2 * (time * testNumeric * 0.00003 | cos), y: 3.5, z: 3.2 * (time * testNumeric * 0.00003 | sin)}"
         [intensity]="0.65"
       ></dq-light-point>
       <dq-cube [position]="{x: -1, y: 0.5}" [color]="testColor">
