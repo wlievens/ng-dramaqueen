@@ -70,7 +70,7 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
   ngOnInit() {
   }
 
-  protected onModelUpdate(child: DqNodeComponent) {
+  protected onChildUpdate(child: DqNodeComponent) {
     const scene = this.scene;
     while (scene.children.length > 0) {
       scene.remove(scene.children[scene.children.length - 1]);

@@ -1,11 +1,11 @@
-import {AfterViewInit, ContentChildren, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges} from '@angular/core';
+import {AfterViewInit, ContentChildren, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, SimpleChanges} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Object3D} from 'three';
 import {DqContainerComponent} from '../dq-container/dq-container.component';
 import {Element3D} from '../model/element';
 import {Vector} from '../model/vector';
 
-export abstract class DqNodeComponent implements OnChanges, OnInit, AfterViewInit {
+export abstract class DqNodeComponent implements OnChanges, OnInit, OnDestroy, AfterViewInit {
   @Input()
   position: Vector;
 
@@ -56,9 +56,9 @@ export abstract class DqNodeComponent implements OnChanges, OnInit, AfterViewIni
   }
 
   ngAfterViewInit() {
-    this.propagateParent();
+    this.propagateParentToChildren();
     this.children.changes.subscribe(changes => {
-      this.propagateParent();
+      this.propagateParentToChildren();
     });
   }
 
@@ -69,7 +69,11 @@ export abstract class DqNodeComponent implements OnChanges, OnInit, AfterViewIni
         return;
       }
     }
-    this.regenerate();
+    this.generateAndSetModel();
+  }
+
+  ngOnDestroy() {
+    this.setModel([]);
   }
 
   ngOnInit() {
@@ -79,30 +83,33 @@ export abstract class DqNodeComponent implements OnChanges, OnInit, AfterViewIni
 
   setParent(parent: DqContainerComponent) {
     this.parent = parent;
-    this.regenerate();
+    this.generateAndSetModel();
   }
 
-  protected onModelUpdate(child: DqNodeComponent) {
-    this.generate();
+  protected onChildUpdate(child: DqNodeComponent) {
+    this.generateAndSetModel();
   }
 
   protected setModel(model: Element3D[]) {
     this.model = model;
     if (this.parent) {
-      this.parent.onModelUpdate(this);
+      this.parent.onChildUpdate(this);
     }
   }
 
-  private propagateParent() {
-    this.children.filter(child => child.getParent() !== this).forEach(child => child.setParent(this));
-  }
-
-  private regenerate() {
+  private generateAndSetModel() {
     this.generate().subscribe(model => {
       model.forEach(object => object.userData = this);
       model.filter(object => object instanceof Object3D).forEach(object => this.transform(object as Object3D));
       this.setModel(model);
     });
+  }
+
+  private propagateParentToChildren() {
+    this.children
+      .filter(element => element !== this)
+      .filter(element => element.getParent() !== this)
+      .forEach(child => child.setParent(this));
   }
 
   private transform(object: Object3D) {

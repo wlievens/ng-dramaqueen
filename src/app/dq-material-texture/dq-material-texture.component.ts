@@ -10,6 +10,9 @@ import {DqNodeComponent} from '../dq-node/dq-node.component';
 })
 export class DqMaterialTextureComponent extends DqMaterialComponent {
   @Input()
+  color: string = '#000000';
+
+  @Input()
   url: string;
 
   constructor() {
@@ -17,12 +20,12 @@ export class DqMaterialTextureComponent extends DqMaterialComponent {
   }
 
   createMaterial(): Material {
-    const {url} = this;
+    const {color, url} = this;
     if (!url) {
-      return new MeshBasicMaterial({color: '0xff00ff'});
+      return new MeshBasicMaterial({color});
     }
     const loader = new TextureLoader();
-    const material = new MeshBasicMaterial();
+    const material = new MeshBasicMaterial({color});
     loader.load(url, texture => {
       texture.encoding = sRGBEncoding;
       material.map = texture;

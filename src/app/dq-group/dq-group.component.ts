@@ -22,7 +22,7 @@ export class DqGroupComponent extends DqContainerComponent {
     return of([this.group]);
   }
 
-  protected onModelUpdate(child: DqNodeComponent) {
+  protected onChildUpdate(child: DqNodeComponent) {
     const {group} = this;
     while (group.children.length) {
       group.remove(group.children[group.children.length - 1]);
