@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {Group, Object3D} from 'three';
 import {DqContainerComponent} from '../dq-container/dq-container.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
+import {Element3D} from '../model/element';
 
 @Component({
   selector: 'dq-group',
@@ -17,17 +18,19 @@ export class DqGroupComponent extends DqContainerComponent {
     this.group = new Group();
   }
 
-  onModelUpdate(child: DqNodeComponent) {
+  generate(): Observable<Element3D[]> {
+    return of([this.group]);
+  }
+
+  protected onModelUpdate(child: DqNodeComponent) {
     const {group} = this;
     while (group.children.length) {
       group.remove(group.children[group.children.length - 1]);
     }
     this.children
       .filter(element => element !== this)
-      .forEach(element => element.getModel().forEach(object => group.add(object)));
-  }
-
-  generate(): Observable<Object3D[]> {
-    return of([this.group]);
+      .forEach(element => element.getModel()
+        .filter(object => object instanceof Object3D)
+        .forEach(object => group.add(object as Object3D)));
   }
 }

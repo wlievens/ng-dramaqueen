@@ -1,10 +1,11 @@
-import {EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {AfterViewInit, ContentChildren, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Object3D} from 'three';
 import {DqContainerComponent} from '../dq-container/dq-container.component';
+import {Element3D} from '../model/element';
 import {Vector} from '../model/vector';
 
-export abstract class DqNodeComponent implements OnChanges, OnInit {
+export abstract class DqNodeComponent implements OnChanges, OnInit, AfterViewInit {
   @Input()
   position: Vector;
 
@@ -20,10 +21,13 @@ export abstract class DqNodeComponent implements OnChanges, OnInit {
   @Output()
   hover: EventEmitter<DqNodeComponent> = new EventEmitter();
 
+  @ContentChildren(DqNodeComponent)
+  children: QueryList<DqNodeComponent>;
+
   private selectWired: boolean = false;
   private hoverWired: boolean = false;
   private parent: DqContainerComponent;
-  private model: Object3D[] = [];
+  private model: Element3D[] = [];
 
   emitHover(): boolean {
     if (this.hoverWired) {
@@ -41,9 +45,9 @@ export abstract class DqNodeComponent implements OnChanges, OnInit {
     return false;
   }
 
-  abstract generate(): Observable<Object3D[]>;
+  abstract generate(): Observable<Element3D[]>;
 
-  getModel(): Object3D[] {
+  getModel(): Element3D[] {
     return this.model;
   }
 
@@ -51,9 +55,16 @@ export abstract class DqNodeComponent implements OnChanges, OnInit {
     return this.parent;
   }
 
+  ngAfterViewInit() {
+    this.propagateParent();
+    this.children.changes.subscribe(changes => {
+      this.propagateParent();
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if ('position' in changes) {
-      this.model.forEach(object => this.transform(object));
+      this.model.filter(object => object instanceof Object3D).forEach(object => this.transform(object as Object3D));
       if (Object.keys(changes).length === 1) {
         return;
       }
@@ -71,17 +82,25 @@ export abstract class DqNodeComponent implements OnChanges, OnInit {
     this.regenerate();
   }
 
-  protected setModel(model: Object3D[]) {
+  protected onModelUpdate(child: DqNodeComponent) {
+    this.generate();
+  }
+
+  protected setModel(model: Element3D[]) {
     this.model = model;
     if (this.parent) {
       this.parent.onModelUpdate(this);
     }
   }
 
+  private propagateParent() {
+    this.children.filter(child => child.getParent() !== this).forEach(child => child.setParent(this));
+  }
+
   private regenerate() {
     this.generate().subscribe(model => {
       model.forEach(object => object.userData = this);
-      model.forEach(object => this.transform(object));
+      model.filter(object => object instanceof Object3D).forEach(object => this.transform(object as Object3D));
       this.setModel(model);
     });
   }

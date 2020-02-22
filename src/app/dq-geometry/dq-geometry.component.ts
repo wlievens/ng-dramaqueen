@@ -1,8 +1,9 @@
 import {Input} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {BufferGeometry, Geometry, Mesh, MeshPhongMaterial, Object3D} from 'three';
+import {BufferGeometry, Geometry, Mesh, MeshPhongMaterial} from 'three';
+import {DqMaterialComponent} from '../dq-material/dq-material.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
-import {Vector} from '../model/vector';
+import {Element3D} from '../model/element';
 
 export abstract class DqGeometryComponent extends DqNodeComponent {
   @Input()
@@ -12,9 +13,19 @@ export abstract class DqGeometryComponent extends DqNodeComponent {
     super();
   }
 
-  protected createMesh(geometry: Geometry | BufferGeometry): Observable<Object3D[]> {
-    const {color} = this;
-    const mesh = new Mesh(geometry, new MeshPhongMaterial({color}));
+  protected createMesh(geometry: Geometry | BufferGeometry): Observable<Element3D[]> {
+    const {children, color} = this;
+    let material = null;
+    if (children) {
+      const materialComponent: DqMaterialComponent = children.find(child => child instanceof DqMaterialComponent) as DqMaterialComponent;
+      if (materialComponent) {
+        material = materialComponent.getModelMaterial();
+      }
+    }
+    if (!material) {
+      material = new MeshPhongMaterial({color});
+    }
+    const mesh = new Mesh(geometry, material);
     mesh.receiveShadow = true;
     mesh.castShadow = true;
     return of([(mesh)]);

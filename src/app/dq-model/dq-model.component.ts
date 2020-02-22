@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {Mesh, MeshPhongMaterial, Object3D} from 'three';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
 import {STLLoader} from 'three/examples/jsm/loaders/STLLoader';
+import {Element3D} from '../model/element';
 
 @Component({
   selector: 'dq-model',
@@ -20,12 +21,12 @@ export class DqModelComponent extends DqNodeComponent {
     super();
   }
 
-  generate(): Observable<Object3D[]> {
+  generate(): Observable<Element3D[]> {
     const {url} = this;
     if (!url) {
       return of([]);
     }
-    return new Observable<Object3D[]>(observer => {
+    return new Observable<Element3D[]>(observer => {
       new STLLoader().load(url, geometry => {
         const {color} = this;
         const mesh = new Mesh(geometry, new MeshPhongMaterial({color}));

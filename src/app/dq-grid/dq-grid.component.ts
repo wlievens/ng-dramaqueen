@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {GridHelper, Object3D} from 'three';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
+import {Element3D} from '../model/element';
 
 @Component({
   selector: 'dq-grid',
@@ -19,7 +20,7 @@ export class DqGridComponent extends DqNodeComponent {
     super();
   }
 
-  generate(): Observable<Object3D[]> {
+  generate(): Observable<Element3D[]> {
     const {cell, cells} = this;
     return of([new GridHelper(cell * cells, cells, 0x333333, 0xbbbbbb)]);
   }

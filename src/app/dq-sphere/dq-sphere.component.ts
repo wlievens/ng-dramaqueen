@@ -1,8 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Object3D, SphereBufferGeometry} from 'three';
+import {SphereBufferGeometry} from 'three';
 import {DqGeometryComponent} from '../dq-geometry/dq-geometry.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
+import {Element3D} from '../model/element';
 
 @Component({
   selector: 'dq-sphere',
@@ -17,7 +18,7 @@ export class DqSphereComponent extends DqGeometryComponent {
     super();
   }
 
-  generate(): Observable<Object3D[]> {
+  generate(): Observable<Element3D[]> {
     return this.createMesh(new SphereBufferGeometry(this.radius, 32, 16));
   }
 }

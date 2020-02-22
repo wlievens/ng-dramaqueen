@@ -1,8 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {CameraHelper, Mesh, MeshBasicMaterial, Object3D, PointLight, SphereBufferGeometry} from 'three';
+import {CameraHelper, Mesh, MeshBasicMaterial, PointLight, SphereBufferGeometry} from 'three';
 import {DqLightComponent} from '../dq-light/dq-light.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
+import {Element3D} from '../model/element';
 
 @Component({
   selector: 'dq-light-point',
@@ -17,7 +18,7 @@ export class DqLightPointComponent extends DqLightComponent {
     super();
   }
 
-  generate(): Observable<Object3D[]> {
+  generate(): Observable<Element3D[]> {
     const {color, intensity} = this;
     const light = new PointLight(color, intensity);
     light.castShadow = true;

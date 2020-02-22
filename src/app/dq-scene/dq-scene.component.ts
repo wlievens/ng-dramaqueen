@@ -5,6 +5,7 @@ import {BasicShadowMap, Color, Object3D, PerspectiveCamera, Raycaster, Scene, Ve
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import {DqGroupComponent} from '../dq-group/dq-group.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
+import {Element3D} from '../model/element';
 
 @Component({
   selector: 'dq-scene',
@@ -28,6 +29,10 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
 
   constructor(private ngZone: NgZone) {
     super();
+  }
+
+  generate(): Observable<Element3D[]> {
+    return of([]);
   }
 
   ngAfterViewInit() {
@@ -62,21 +67,19 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
     this.animate();
   }
 
-  onModelUpdate(child: DqNodeComponent) {
+  ngOnInit() {
+  }
+
+  protected onModelUpdate(child: DqNodeComponent) {
     const scene = this.scene;
     while (scene.children.length > 0) {
       scene.remove(scene.children[scene.children.length - 1]);
     }
     this.children
       .filter(element => element !== this)
-      .forEach(element => element.getModel().forEach(object => scene.add(object)));
-  }
-
-  generate(): Observable<Object3D[]> {
-    return of([]);
-  }
-
-  ngOnInit() {
+      .forEach(element => element.getModel()
+        .filter(object => object instanceof Object3D)
+        .forEach(object => scene.add(object as Object3D)));
   }
 
   onMouseDown(event: MouseEvent) {
