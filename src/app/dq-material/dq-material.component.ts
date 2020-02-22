@@ -1,4 +1,5 @@
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {Material} from 'three';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
 import {Element3D} from '../model/element';
@@ -8,10 +9,10 @@ export abstract class DqMaterialComponent extends DqNodeComponent {
     super();
   }
 
-  abstract createMaterial(): Material;
+  abstract createMaterial(): Observable<Material>;
 
   generate(): Observable<Element3D[]> {
-    return of([this.createMaterial()]);
+    return this.createMaterial().pipe(map(material => [material]));
   }
 
   getModelMaterial(): Material {

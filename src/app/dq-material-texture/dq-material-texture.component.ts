@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {Observable, of} from 'rxjs';
 import {Material, MeshBasicMaterial, sRGBEncoding, TextureLoader} from 'three';
 import {DqMaterialComponent} from '../dq-material/dq-material.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
@@ -19,18 +20,17 @@ export class DqMaterialTextureComponent extends DqMaterialComponent {
     super();
   }
 
-  createMaterial(): Material {
+  createMaterial(): Observable<Material> {
     const {color, url} = this;
     if (!url) {
-      return new MeshBasicMaterial({color});
+      return of(new MeshBasicMaterial({color}));
     }
-    const loader = new TextureLoader();
-    const material = new MeshBasicMaterial({color});
-    loader.load(url, texture => {
-      texture.encoding = sRGBEncoding;
-      material.map = texture;
-      material.needsUpdate = true;
+    return new Observable<Material>(observer => {
+      new TextureLoader().load(url, texture => {
+        texture.encoding = sRGBEncoding;
+        const material = new MeshBasicMaterial({color, map: texture});
+        observer.next(material);
+      });
     });
-    return material;
   }
 }

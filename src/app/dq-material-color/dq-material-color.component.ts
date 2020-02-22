@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {Observable, of} from 'rxjs';
 import {Material, MeshPhongMaterial} from 'three';
 import {DqMaterialComponent} from '../dq-material/dq-material.component';
 import {DqNodeComponent} from '../dq-node/dq-node.component';
@@ -16,8 +17,8 @@ export class DqMaterialColorComponent extends DqMaterialComponent {
     super();
   }
 
-  createMaterial(): Material {
+  createMaterial(): Observable<Material> {
     const {color} = this;
-    return new MeshPhongMaterial({color});
+    return of(new MeshPhongMaterial({color}));
   }
 }
