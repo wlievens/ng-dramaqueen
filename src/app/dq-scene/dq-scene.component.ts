@@ -41,7 +41,7 @@ export class DqSceneComponent extends DqGroupComponent implements OnInit, AfterV
       return;
     }
 
-    const renderer = new WebGLRenderer();
+    const renderer = new WebGLRenderer({antialias: true});
 
     const camera = new PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
     const controls = new OrbitControls(camera, renderer.domElement);
