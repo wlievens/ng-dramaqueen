@@ -17,7 +17,7 @@ export class DqMaterialColorComponent extends DqMaterialComponent {
     super();
   }
 
-  createMaterial(): Observable<Material> {
+  protected createMaterial(): Observable<Material> {
     const {color} = this;
     return of(new MeshPhongMaterial({color}));
   }

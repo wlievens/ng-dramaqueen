@@ -20,7 +20,7 @@ export class DqMaterialTextureComponent extends DqMaterialComponent {
     super();
   }
 
-  createMaterial(): Observable<Material> {
+  protected  createMaterial(): Observable<Material> {
     const {color, url} = this;
     if (!url) {
       return of(new MeshBasicMaterial({color}));

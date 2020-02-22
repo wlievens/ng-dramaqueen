@@ -9,8 +9,6 @@ export abstract class DqMaterialComponent extends DqNodeComponent {
     super();
   }
 
-  abstract createMaterial(): Observable<Material>;
-
   generate(): Observable<Element3D[]> {
     return this.createMaterial().pipe(map(material => [material]));
   }
@@ -26,4 +24,6 @@ export abstract class DqMaterialComponent extends DqNodeComponent {
     }
     return null;
   }
+
+  protected abstract createMaterial(): Observable<Material>;
 }
