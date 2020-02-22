@@ -10,9 +10,9 @@ export class AppComponent {
   testColor: string = '#e894a6';
   time = 0;
   selectedX: number;
-  selectedZ: number;
+  selectedY: number;
   eight = [0, 1, 2, 3, 4, 5, 6, 7];
-  chessPieceScale = 0.2;
+  chessPieceScale = 0.25;
   color1 = '#2f1e4d';
   color2 = '#d1d7dc';
   textured: boolean = false;
@@ -26,6 +26,6 @@ export class AppComponent {
 
   onSelect(x: number, z: number) {
     this.selectedX = x;
-    this.selectedZ = z;
+    this.selectedY = z;
   }
 }

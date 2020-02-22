@@ -12,6 +12,7 @@ import {DqGridComponent} from './dq-grid/dq-grid.component';
 import {DqGroupComponent} from './dq-group/dq-group.component';
 import {DqLightAmbientComponent} from './dq-light-ambient/dq-light-ambient.component';
 import {DqLightPointComponent} from './dq-light-point/dq-light-point.component';
+import {DqLightSpotComponent} from './dq-light-spot/dq-light-spot.component';
 import {DqMaterialColorComponent} from './dq-material-color/dq-material-color.component';
 import {DqMaterialTextureComponent} from './dq-material-texture/dq-material-texture.component';
 import {DqModelComponent} from './dq-model/dq-model.component';
@@ -28,6 +29,7 @@ import {SinPipe} from './sin.pipe';
     DqGroupComponent,
     DqLightAmbientComponent,
     DqLightPointComponent,
+    DqLightSpotComponent,
     DqMaterialColorComponent,
     DqMaterialTextureComponent,
     DqModelComponent,

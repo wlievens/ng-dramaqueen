@@ -17,101 +17,64 @@
 
   <div style="height: 800px;">
     <dq-scene>
-      <dq-light-ambient [intensity]="0.25"></dq-light-ambient>
-      <dq-light-point
+      <dq-light-ambient [intensity]="0.20"></dq-light-ambient>
+      <dq-light-spot
         [color]="'#ffffee'"
-        [position]="{x: 3 * ((time * 0.001) | cos), y: 2.5, z: 3 * ((time * 0.001) | sin)}"
+        [position]="{x: 3.5 * ((time * 0.0015) | cos), y: 3.5 * ((time * 0.0015) | sin), z: 4}"
+        [target]="{x: -1.0 * ((time * 0.0015) | cos), y: -1.0 * ((time * 0.0015) | sin), z: -4}"
         [intensity]="lightIntensity * 0.05"
-      ></dq-light-point>
-      <dq-group [position]="{x: -3.5, z: -3.5}">
+        [debug]="false"
+      ></dq-light-spot>
+      <dq-group [position]="{x: -3.5, y: -3.5}">
         <dq-group [position]="{x: x}" *ngFor="let x of eight">
-          <dq-group [position]="{z: z}" *ngFor="let z of eight">
+          <dq-group [position]="{y: y}" *ngFor="let y of eight">
             <dq-cube
-              [size]="{x: 1, y: 0.1, z: 1}"
-              (hover)="onSelect(x, z)">
+              (hover)="onSelect(x, y)"
+              [size]="{x: 1, y: 1, z: 0.1}">
               <dq-material-color
-                [color]="(z + x) % 2 ? ((x === selectedX && z === selectedZ) ? '#bda166' : color1) : ((x === selectedX && z === selectedZ) ? '#bda166' : color2)"
+                [color]="(y + x) % 2 ? ((x === selectedX && y === selectedY) ? '#bda166' : color1) : ((x === selectedX && y === selectedY) ? '#bda166' : color2)"
                 *ngIf="!textured"
               ></dq-material-color>
               <dq-material-texture
-                [color]="(z + x) % 2 ? ((x === selectedX && z === selectedZ) ? '#bda166' : color1) : ((x === selectedX && z === selectedZ) ? '#bda166' : color2)"
+                [color]="(y + x) % 2 ? ((x === selectedX && y === selectedY) ? '#bda166' : color1) : ((x === selectedX && y === selectedY) ? '#bda166' : color2)"
                 [url]="'assets/textures/limestone.jpg'"
                 *ngIf="textured"
               ></dq-material-texture>
             </dq-cube>
           </dq-group>
-          <dq-group [position]="{z: z}" *ngFor="let z of [0, 1, 6, 7]">
+          <dq-group [position]="{y: y}" *ngFor="let y of [0, 1, 6, 7]">
             <dq-group
-              [rotation]="{x: -90, y: 0, z: z * 180}"
+              [rotation]="{x: 0, y: 0, z: y === 0 ? 180 : 0}"
               [scale]="{x: chessPieceScale, y: chessPieceScale, z: chessPieceScale}">
-              <ng-container *ngIf="z > 1 ? color2 : color1; let color">
+              <ng-container *ngIf="y > 1 ? color2 : color1; let color">
                 <dq-model
                   [color]="color" [url]="'assets/models/pawn.stl'"
-                  *ngIf="(z === 1 || z === 6)"
+                  *ngIf="(y === 1 || y === 6)"
                 ></dq-model>
                 <dq-model
                   [color]="color" [url]="'assets/models/rook.stl'"
-                  *ngIf="(x === 0 || x === 7) && (z === 0 || z === 7)"
+                  *ngIf="(x === 0 || x === 7) && (y === 0 || y === 7)"
                 ></dq-model>
                 <dq-model
                   [color]="color" [url]="'assets/models/knight.stl'"
-                  *ngIf="(x === 1 || x === 6) && (z === 0 || z === 7)"
+                  *ngIf="(x === 1 || x === 6) && (y === 0 || y === 7)"
                 ></dq-model>
                 <dq-model
                   [color]="color" [url]="'assets/models/bishop.stl'"
-                  *ngIf="(x === 2 || x === 5) && (z === 0 || z === 7)"
+                  *ngIf="(x === 2 || x === 5) && (y === 0 || y === 7)"
                 ></dq-model>
                 <dq-model
                   [color]="color" [url]="'assets/models/queen.stl'"
-                  *ngIf="(x === 3) && (z === 0 || z === 7)"
+                  *ngIf="(x === 3) && (y === 0 || y === 7)"
                 ></dq-model>
                 <dq-model
                   [color]="color" [url]="'assets/models/king.stl'"
-                  *ngIf="(x === 4) && (z === 0 || z === 7)"
+                  *ngIf="(x === 4) && (y === 0 || y === 7)"
                 ></dq-model>
               </ng-container>
             </dq-group>
           </dq-group>
         </dq-group>
-      </dq-group>
-    </dq-scene>
-  </div>
-
-  <div style="height: 600px;" *ngIf="false">
-    <dq-scene (hoverClear)="onSelect(null, null)">
-      <dq-grid [cell]="1" [cells]="20"></dq-grid>
-
-      <dq-cube [color]="'#becf78'" [size]="{x: 10, y: 0.1, z: 10}" [position]="{y: -0.075}"></dq-cube>
-
-      <dq-group *ngFor="let x of [0, 1, 2, 3, 4]">
-        <dq-group [position]="{z: 1}" *ngFor="let z of [0, 1, 2, 3, 4]">
-          <dq-cube
-            [color]="(x === selectedX && z === selectedZ) ? '#bb2f3b' : '#aabbaa'"
-            [size]="{x: 0.3, y: 0.3, z: 0.3}"
-            [position]="{x: 0.4 * x, y: 0.1, z: 0.4 * z}"
-            (hover)="onSelect(x, z)"
-          ></dq-cube>
-        </dq-group>
-      </dq-group>
-
-      <dq-light-ambient [intensity]="0.25"></dq-light-ambient>
-      <dq-light-point
-        [color]="'#aaaaff'"
-        [position]="{x: 3 * (time * -lightIntensity * 0.00005 | cos), y: 3.5, z: 3 * (time * -lightIntensity * 0.00005 | sin)}"
-        [intensity]="0.65"
-      ></dq-light-point>
-      <dq-light-point
-        [color]="'#ffaaaa'"
-        [position]="{x: 3.2 * (time * lightIntensity * 0.00003 | cos), y: 3.5, z: 3.2 * (time * lightIntensity * 0.00003 | sin)}"
-        [intensity]="0.65"
-      ></dq-light-point>
-      <dq-cube [position]="{x: -1, y: 0.5}" [color]="testColor">
-      </dq-cube>
-      <dq-group [position]="{x: 0, y: 0.5, z: 0}">
-        <dq-cube [position]="{x: +1}" [color]="'#7ccdee'">
-        </dq-cube>
-        <dq-sphere [position]="{x: +1, y: +1}" [color]="'#8999c8'">
-        </dq-sphere>
       </dq-group>
     </dq-scene>
   </div>
