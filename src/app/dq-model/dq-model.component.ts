@@ -17,6 +17,9 @@ export class DqModelComponent extends DqNodeComponent {
   @Input()
   color: string = '#000000';
 
+  @Input()
+  shadows: boolean = true;
+
   constructor() {
     super();
   }
@@ -30,8 +33,8 @@ export class DqModelComponent extends DqNodeComponent {
       new STLLoader().load(url, geometry => {
         const {color} = this;
         const mesh = new Mesh(geometry, new MeshPhongMaterial({color}));
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
+        mesh.castShadow = this.shadows;
+        mesh.receiveShadow = this.shadows;
         observer.next([mesh]);
       });
     });
